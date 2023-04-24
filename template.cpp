@@ -230,3 +230,39 @@ alls.erase(unique(alls.begin(),alls.end()),alls.end());
 //对应元素本身存放在numsa中
 //每次使用a[findx[x,alls]]读取元素
 //**************************************离散化
+
+//***********************************************
+vector<int>::iterator funique(vector<int> &nums)
+{
+    int i,j;
+    for(i=0,j=0;i<nums.size();++i)
+    {
+        if(i==0|| nums[i]!=nums[i-1])
+            nums[j++]=nums[i];
+    }
+    return nums.begin()+j;
+}
+//**************************************实现unique函数，返回去重后的下一个位置
+typedef pair<int,int> PII;
+vector<PII> nums1;
+vector<PII> fsegMerge(vector<PII>& nums1)
+{
+    if(nums1.size()<=1) return nums1;
+    vector<PII> ans1;
+    int lo=nums1[0].first,hi=nums1[0].second;
+    for(int i=1;i<nums1.size();++i)
+    {
+        if(nums1[i].first>hi)
+        {
+            ans1.push_back({lo,hi});
+            lo=nums1[i].first,hi=nums1[i].second;
+        }
+        else
+        {
+            hi=max(hi,nums1[i].second);
+        }
+    }
+    ans1.push_back({lo,hi});
+    return ans1;
+}
+//***********************************区间合并 nums1中的区间用pair表示。返回合并后的新区间

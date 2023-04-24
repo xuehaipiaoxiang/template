@@ -1,4 +1,7 @@
 
+#define fas(i,a,b) for(int i=a;i<b;++i) 
+#define mm memset
+
 //********************************quickSort
 void quickSort(int nums1[],int lo1,int hi1)
 {
@@ -57,7 +60,7 @@ void fmergeSort(int nums[],int lo,int hi)//[lo,hi]
     fmerge(nums,lo,mid,hi);
 }
 
-//***********************end quickSort
+//******************************end quickSort
 
 int findLow(int nums[],int lo,int hi,int x) //[lo,hi]
 {
@@ -266,3 +269,42 @@ vector<PII> fsegMerge(vector<PII>& nums1)
     return ans1;
 }
 //***********************************区间合并 nums1中的区间用pair表示。返回合并后的新区间
+
+const int N=10000;
+int e1[N];
+//e1存放元素
+int ne1[N];
+//ne1存放下一个元素的指针
+//其中 ne1和e1的索引是对应的
+int head1,idx;
+//head存放头节点；idx指向当前可用的位置，每次使用后idx=idx+1
+
+void finitialize()
+{
+    head1=-1; //此时head指向空
+    idx=0;
+}
+//在逻辑上把元素插在头部
+void faddHead(int x)
+{
+    e1[idx]=x;
+    ne1[idx]=head1;
+    head1=idx;
+    ++idx;
+}
+//插入的元素在K的后面
+void faddK(int k,int x)
+{
+    e1[idx]=x;
+    ne1[idx]=ne1[k];
+    ne1[k]=idx;
+    ++idx;
+}
+// 删除K后面的一个元素
+void fremove(int k)
+{
+    ne1[k]=ne1[ne1[k]];
+}
+//**************************************数组模拟链表
+// 避免使用new malloc函数，防止超时
+

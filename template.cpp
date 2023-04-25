@@ -1,6 +1,25 @@
-
-#define fas(i,a,b) for(int i=a;i<b;++i) 
+//********************************
+#define fdbg  std::cout<<"*********************************"<<std::endl;
+#define fas(i,a,b) for(int i=a;i<b;++i)  //[小 大)
+#define fdes(i,b,a) for(int i=b;i>=a;--i) //[大 小]
 #define mm memset
+typedef pair<int,int> PII;
+//*********************************积累的常用宏和定义
+
+// **********************************
+    ios::sync_with_stdio(false);//取消cin/cout和printf/scanf之间的绑定
+    cin.tie(0);//取消cin和cout之间的绑定
+//*******************************************加快cin/cout速度
+
+/*
+c++中常用打印
+printf("%lld",long long ) 对应 long long
+printf("lf",double)
+scanf("%d",&n1) 把缓冲区的值放入n1地址对应的变量中
+值得一提的是，scanf会自动忽略空格，Tab指标和回车。
+但是scanf(" %c",&c1)例外，它会读取'\n'到字符c1中。所有一般在模式前面加上空格
+即为“空格%c”
+*/
 
 //********************************quickSort
 void quickSort(int nums1[],int lo1,int hi1)
@@ -26,7 +45,7 @@ int partition(int nums1[],int lo1,int hi1)
 }
 // ***********************************end quickSort
 
-// *************************************mergeSort
+// ***************************************************************mergeSort归并排序
 int nums[1000];
 int nums2[1000];
 void fmerge(int nums[],int lo,int mid,int hi) //[lo,mid] [mid+1,hi]
@@ -60,7 +79,7 @@ void fmergeSort(int nums[],int lo,int hi)//[lo,hi]
     fmerge(nums,lo,mid,hi);
 }
 
-//******************************end quickSort
+//****************************************************************************end quickSort
 
 int findLow(int nums[],int lo,int hi,int x) //[lo,hi]
 {
@@ -68,7 +87,7 @@ int findLow(int nums[],int lo,int hi,int x) //[lo,hi]
 
     while (lo<hi)
     {
-        int mid=(lo+hi)>>1;
+        int mid=(lo+hi)>>1;//如果lo和hi相邻，那么mid的值为lo
         if(x<=nums[mid])
             hi=mid;
         else
@@ -83,16 +102,16 @@ int findHigh(int nums[],int lo,int hi,int x) //[lo,hi]
     //所有小于等于x中最大的
     while (lo<hi)
     {
-        int mid=(lo+hi+1)>>1;
+        int mid=(lo+hi+1)>>1; //如果lo和hi相邻，那么mid的值为hi
         if(nums[mid]<=x)
-            lo=mid;
+            lo=mid;         // 此时mid的值是hi，再赋值给lo就能在下次跳出循环。
         else
             hi=mid-1;
     }
     if(nums[lo]==x) return lo;
     return -1;    
 }
-//****************************end Bsearch
+//**************************************************************************end Bsearch
 string faddString(const string&a,const string&b)
 {
     string c;
@@ -305,6 +324,237 @@ void fremove(int k)
 {
     ne1[k]=ne1[ne1[k]];
 }
-//**************************************数组模拟链表
 // 避免使用new malloc函数，防止超时
+//**************************************数组模拟链表
+const int MAXN=1000;
+class UF
+{
+private:
+    int _n;
+    int _rank[MAXN];
+    int _uf[MAXN];
+protected:
+    virtual void finitialize(int n);
+public:
+    UF(int n):_n(n){finitialize(n);}
+    int findx(int x);
+    int fgetN();
+    void fmerge(int x,int y);
+};
+
+void UF::finitialize(int n)
+{//初始化：每个节点以自己为根同时它的秩设置为一
+//秩：根节点对应集合的最长路径
+    for(int i=0;i<n;++i)
+    {
+        _rank[i]=1;
+        _uf[i]=i;
+    }
+}
+int UF::findx(int x)
+{   //路径压缩
+    //在返回过程中使路径上的所有结点指向根节点
+    if(_uf[x]==x)
+        return x;
+    return _uf[x]=mfind(_uf[x]);
+}
+int UF::fgetN()
+{//返回现存的集合数量
+    return _n;
+}
+void UF::fmerge(int x,int y)
+{   //按秩合并
+    //把x和y分别位于的集合进行合并
+    int tx=mfind(x);
+    int ty=mfind(y);
+    if(tx==ty) return;
+    --_n;
+    if(_rank[tx]<_rank[ty])
+    {
+        _uf[tx]=ty;
+    }
+    else if(_rank[ty]<_rank[tx])
+    {
+        _uf[ty]=tx;
+    }
+    else
+    {//_rank[tx]==_rank[ty]
+        _uf[tx]=ty;
+        ++_rank[ty];
+    }
+}
+//其实rank可以用负数在_uf中表示
+//****************************************************************并查集*******************
+
+//**************通过统计DFS的调用次数来确定连通分量(极大连通子图)的数目
+vector<vector<bool>> matrix(n,vector<bool>(n,false));//用邻接矩阵存储图
+//matrix[x-1][y-1]=matrix[y-1][x-1]=true;
+int n;      //节点数目
+vector<bool> visited(n,false);//visited数组用bool存储节点是否访问过
+for(int i=0;i<n;++i)
+{
+    if(visited[i]==false)
+    {
+        dfs(matrix,i,visited);
+        ++counter;// 连通分量数目
+    }
+}
+// const vector<vector<bool>>& matrix,int x,vector<bool>& visited 
+void dfs(int x)
+{
+    //if(visited[x]==true) return; 也可以这样显式定义递归基
+    int nsize=matrix.size();
+    visited[x]=true;
+    for(int i=0;i<nsize;++i)
+    {
+        if(matrix[x][i]==true&&visited[i]==false) 
+        {//有当前节点还有边，并且边连接的节点为没有访问过
+            dfs(i);
+        }
+    }
+}
+
+/*
+连通分量=极大连通子图
+极小连通子图&&所有点::=生成数
+MST最小生成树::=生成数集合中边的和最小的一类
+
+PRIM普里姆prim  和   kruskal 克鲁斯卡尔 都适用于求解MST
+一般prim适合节点少，其时间复杂度为O(N^2)。kruskal适合边少,其时间复杂度为O(E*log(E))。
+O(N^2)围绕节点数N，直接二重循环
+O(E*log(E)::=E是遍历所有边的一次，log(E)是从优先队列(小根堆)中选出当前最短边的消耗
+*/
+
+
+
+
+//*****************************************prim*************
+//实战中适合求解问题直接给出每个点的坐标，而不是给出边的长度
+const int MAXN = 100;
+enum Mflag {R, U};  //定义枚举类型
+// Remain-set and Used -set 
+// U Used集合表示最终形成 MST节点的集合
+// R Remain集合表示当前还剩下未选用的元素
+struct Point {
+    double x, y; //每个点的坐标
+    Mflag flag1;// 枚举类型和枚举变量 其值为R 和U
+};
+Point r[MAXN];//在初始化时应定位REMAIN，即所有节点都还没有被选用
+
+bool isempty(int n, Point s[]);// 谓词：判断Remain集合是否为空
+inline double calculateD(Point &a, Point &b); //计算两个点的距离
+
+bool isempty(int n, Point s[]) {
+    for (int i = 0; i < n; ++i) {
+        if (s[i].flag1 == R)
+            return false;
+    }
+    return true;
+}
+inline double calculateD(Point a, Point b) {
+    //其实都不开方也能比较大小
+    return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+}
+// 读入节点x，y 于Point r[MAXN],并且所有点的标记Mflag应初始化时应REMAIN::=即所有节点都还没有被选用
+//核心步骤   On^2 计算R和U 集合最近元素距离
+r[0].flag1 = U;   // 随机选用一个点归为MST的预备中
+while (!isempty(n, r)) {
+    double minv = 100000;// 画家策略 求覆盖
+    int keepi;
+    for (int i = 0; i < n; ++i) {
+        if (r[i].flag1 == R) {
+            for (int j = 0; j < n; ++j) {
+                if (r[j].flag1 == U) {
+                    double dst = calculateD(r[i], r[j]);
+                    if (dst < minv) {// 找分别位于两个集合中距离最近的点和位于Remain集合中的节点的下标
+                        minv = dst;
+                        keepi = i;
+                    }
+                }
+            }
+        }
+    }
+    ans += kmin;// 累加R和U集合最近的边
+    r[keepi].flag1 = U;//R节点数目减一，也意味着U集合加一
+}
+
+
+//**************************************************************kruskal 算法
+/*
+需要 用到并查集来判断当前选用边的两个节点是否属于两个不同的集合,若是，则选用。
+kruskal 适用于问题给出每个点和每对点的距离。譬如 给出节点下标为0，1，2 && 给出节点0-1的距离 w。
+而不是给出每个点的具体坐标 x，y
+*/
+
+struct Edge
+{
+    int point1,point2,weight;
+    Edge(int p1,int p2,int w):point1(p1),point2(p2),weight(w){}; //节点下标0和1还有距离
+    Edge(){};
+    
+};
+bool cmp(const Edge & e1,const Edge & e2) 
+{
+    return e1.weight<e2.weight;
+}
+int n;// n为节点数
+int numE=n*(n-1)/2; //numE为最多可能的边数
+Edge edge[numE];
+
+//********************并查集(C形式版本)
+const int MAXN=100;
+int _rank[MAXN];
+int father[MAXN];
+void intialize(int n)
+{
+    for(int i=0;i<n;++i)
+    {
+        father[i]=i;
+        _rank[i]=1;
+    }
+}
+
+int find(int x)
+{
+    if(x==father[x])
+        return x;
+    return father[x]=find(father[x]);
+}
+void _union(int x,int y)
+{
+    x=find(x);
+    y=find(y);
+    if(_rank[x]<_rank[y])
+        father[x]=y;
+    else if(_rank[y]<_rank[x])
+        father[y]=x;
+    else
+    {
+        father[x]=y;
+        ++_rank[y];
+    }
+}
+
+//****************end 并查集(C形式版本)
+// 读入数据于Edge edge[numE];
+sort(edge,edge+numE,cmp); // 按边的长度递增排序
+for(int i=0;i<numE;++i)
+{
+    Edge tedge=edge[i];
+    if(find(tedge.point1)!=find(tedge.point2)) 
+    {//用到并查集来判断当前选用边的两个节点是否属于两个不同的集合,若是，则选用。
+        ans+=tedge.weight;
+        _union(tedge.point1,tedge.point2);//同时两个不同点对应的集合合并为同一集合
+    }
+}
+// 返回||输出MST对应的值ans
+
+//*****************************************************Huffman哈夫曼数
+//*****************************************************Dijstra
+//**************************************************topoSort 拓扑排序
+//**********************************************快速幂
+//*********************************************矩阵快速幂
+//********************************************* 二叉堆
+
+
 

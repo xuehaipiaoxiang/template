@@ -371,6 +371,68 @@ vector<int>::iterator funique(vector<int> &nums)
     }
     return nums.begin()+j;
 }
+
+//*****************************************双指针进阶****单调栈或单调队列
+/*
+单调栈
+例子：当前元素x左边，比x小的前提下，更近的元素
+维护一个递增栈
+放入栈中的元素，要么距离x更近，要么更小
+*/
+using namespace std;
+const int N=10010;
+int rsp=0;
+int e1[N];
+
+int main()
+{
+    int n;
+    cin>>n;
+    for(int i=0;i<n;++i)
+    {
+        int tmp;cin>>tmp;
+        while(rsp&&e1[rsp-1]>=tmp)
+            --rsp;
+        if(rsp)
+            cout<<e1[rsp-1]<<" ";
+        else 
+            cout<<-1<<" ";
+        e1[rsp++]=tmp;
+    }
+}
+/*
+单调队列
+实则是双端队列，队尾也要出队满足单调性
+例子：窗口区最大值 满足递减序列
+要么更大，要么寿命长
+*/
+const int N=10010;
+int nums[N];
+int queue1[N]; //下标
+int hh,tt;
+int main()
+{
+    int n,k;
+    scanf("%d%d",&n,&k);
+    for(int i=0;i<n;++i) scanf("%d",nums+i);
+    for(int i=0;i<n;++i)
+    {
+        if(hh<tt&&queue1[hh]<i-k+1) ++hh;
+        while(hh<tt&&nums[i]<=nums[queue1[tt-1]]) --tt;
+        queue1[tt++]=i;
+        if(i>=2) printf("%d ",nums[queue1[hh]]);
+    }
+    puts("");
+    hh=tt=0;
+    for(int i=0;i<n;++i)
+    {
+        if(hh<tt&&queue1[hh]<i-k+1) ++hh;
+        while(hh<tt&&nums[queue1[tt-1]]<=nums[i]) --tt;
+        queue1[tt++]=i;
+        if(i>=2) printf("%d ",nums[queue1[hh]]);
+    }
+}
+
 //*******************************************************************end 双指针常用方式*********************************
 
 
@@ -446,6 +508,82 @@ void fremove(int k)
 {
     ne1[k]=ne1[ne1[k]];
 }
+
+//*******************************************************数组模拟双链表
+//注意 元素和指针的下标都是对齐的
+const int N=10010;
+int e1[N];
+int nl[N];// 存放左指针
+int nr[N];
+int idx1;//存放当前可以用的空间
+
+void finitialize()
+{
+    idx1=2;
+   // e1[0]=e1[1]=0;
+   // nl[0]=nr[1]=-1;
+    nr[0]=1;nl[1]=0;
+}
+
+void fadd(int  k,int x) //插入的元素x在K的后面
+{
+    e1[idx1]=x;
+    nl[idx1]=k;
+    nr[idx1]=nr[k];
+    nl[nr[idx1]]=idx1;
+    nr[nl[idx1]]=idx1;
+    ++idx1;
+}
+
+int fremove(int k)
+{
+    int tmp=e1[k];
+    nl[nr[k]]=nl[k];
+    nr[nl[k]]=nr[k];
+    return tmp;
+}
+//****************************************数组模拟栈
+/*
+[0,]
+int rsp是模拟指针,rsp指向栈顶的下一个可用位置
+rsp=[0,]
+*/
+const int N=10010;
+int e1[N];
+int rsp;
+void finitial()
+{
+    rsp=0;
+}
+void push(int x)
+{
+    e1[rsp++]=x;
+}
+void  pop()
+{
+    --rsp;
+}
+int top()
+{
+    return e1[rsp];
+}
+/*
+消耗一个额外空间区分循环队列情况
+rear指向队列可用位置的下一个位置
+front指向队列最前排可用位置
+front1==rear1 时 队列为空
+(rear1+1)%MAXSIZE==front 是 队满
+(rear-front+MAXSIZE)%MAXSIZE 是元素个数
+
+push 先检测队不满  e1[rear++]=x
+pop 先检测队不空  ++front;
+*/
+const int N=10010;
+int e1[N];
+int front1,rear1;
+
+
+
 //*************************************************************end数组模拟链表********************************
 
 const int MAXN=1000;
@@ -877,4 +1015,49 @@ for(int i=2;i<N;++i)
 前序，中序，后续遍历
 用前+中||后+中||中+层 构建一棵树
 */
+
+//******************************************************KMP****************************************
+/*
+KMP
+*/
+/*
+定义主串，模式串，next数组都从1开始
+p:abaabac
+  1122321
+p:aaa
+  123
+next 存放匹配前缀的下一个位置
+每次for结尾时 j指向匹配前缀的下一个位置,i指向后缀本位.
+下次for开始i++，此时ij都指向新位置
+*/
+const int N=10010,M=1000010;
+char p1[N],s1[M];// p是模式pattern ,s是待匹配字符串
+int next1[N];
+int n,m;
+next1[1]=1;// 1初始化
+for(int i=2,j=1;i<=n;++i)//从2开始
+{
+    while(j>1&&p1[i]!=p1[j]) j=next1[j-1];
+    if(p1[i]==p1[j]) ++j;
+    next1[i]=j;
+}
+for(int i=1,j=1;i<=m;++i)
+{
+    while(j>1&&s1[i]!=p1[j]) j=next1[j-1];
+    if(s1[i]==p1[j])
+    {
+        ++j;
+        if(j==n+1)
+        {
+            printf("%d ",i-n);//i-n+1是从1开始的索引下标
+            j=next1[j-1];
+        }
+    } 
+}
+
+
+
+
+
+
 

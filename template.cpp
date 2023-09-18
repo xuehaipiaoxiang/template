@@ -745,7 +745,7 @@ while (!isempty(n, r)) {
 kruskal 适用于问题给出每个点和每对点的距离。譬如 给出节点下标为0，1，2 && 给出节点0-1的距离 w。
 而不是给出每个点的具体坐标 x，y
 */
-
+void kruskal(){};
 struct Edge
 {
     int point1,point2,weight;

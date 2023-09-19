@@ -616,7 +616,7 @@ int UF::findx(int x)
     //在返回过程中使路径上的所有结点指向根节点
     if(_uf[x]==x)
         return x;
-    return _uf[x]=mfind(_uf[x]);
+    return _uf[x]=findx(_uf[x]);
 }
 int UF::fgetN()
 {//返回现存的集合数量
@@ -625,8 +625,8 @@ int UF::fgetN()
 void UF::fmerge(int x,int y)
 {   //按秩合并
     //把x和y分别位于的集合进行合并
-    int tx=mfind(x);
-    int ty=mfind(y);
+    int tx=findx(x);
+    int ty=findx(y);
     if(tx==ty) return;
     --_n;
     if(_rank[tx]<_rank[ty])

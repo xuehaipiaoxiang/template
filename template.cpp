@@ -15,7 +15,7 @@ scanf("%d",&n1) 把缓冲区的值放入n1地址对应的变量中
 一般while(scanf(...)!=EOF) || while(~scanf(...))
 
 scanf("%s",&str1)和cin 会忽略开头(空白符)空格、Tab制表、和回车。 并且遇到空白符就会停止读入，但不会丢弃。故常常使用getchar()读结尾的/n
-getline() 当且遇到/n时才停止，并丢弃/n
+getline() 会读取空格，当且遇到/n时才停止，并丢弃/n
 gets() c语言版的 getline
 puts() 输出
 但是scanf("%c",&c1)例外，它会读入开头的空白符

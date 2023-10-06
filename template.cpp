@@ -697,55 +697,57 @@ O(E*log(E)::=E是遍历所有边的一次，log(E)是从优先队列(小根堆)�
 
 
 //*****************************************prim*************************prim*************************
+//*****************************************prim*************************prim*************************
 //实战中适合求解问题直接给出每个点的坐标，而不是给出边的长度
-const int MAXN = 100;
-enum Mflag {R, U};  //定义枚举类型
-// Remain-set and Used -set 
-// U Used集合表示最终形成 MST节点的集合
-// R Remain集合表示当前还剩下未选用的元素
-struct Point {
-    double x, y; //每个点的坐标
-    Mflag flag1;// 枚举类型和枚举变量 其值为R 和U
-};
-Point r[MAXN];//在初始化时应定位REMAIN，即所有节点都还没有被选用
+void prim(){};
+const int N = 100;
 
-bool isempty(int n, Point s[]);// 谓词：判断Remain集合是否为空
-inline double calculateD(Point &a, Point &b); //计算两个点的距离
+// struct pii {
+//     double x, y; //每个点的坐标
 
-bool isempty(int n, Point s[]) {
-    for (int i = 0; i < n; ++i) {
-        if (s[i].flag1 == R)
-            return false;
+// };
+typedef pair<int,int> pii;
+pii nums[N];
+bool added[N];
+double numd[N]; for(int i=0;i<N;++i) numd[i] =__DBL_MAX__; 
+//added[i]==false 未加入生成树的节点到 生成数集合 的距离
+
+inline double distc(const pii& a, const pii& b) //两个点的距离的平方
+{
+    return (a.first - b.first) * (a.first - b.first) +  (a.second - b.second) * (a.second - b.second);
+}
+int n; //总计节点数
+numd[0] = 0;
+added[0] = true;
+for(int i =  0; i<n; ++i)
+{
+    if(added[i] == false)
+    {
+        numd[i] = min( distc(nums[i] , nums[0]) ,numd[i]);
     }
-    return true;
 }
-inline double calculateD(Point a, Point b) {
-    //其实都不开方也能比较大小
-    return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
-}
-// 读入节点x，y 于Point r[MAXN],并且所有点的标记Mflag应初始化时应REMAIN::=即所有节点都还没有被选用
-//核心步骤   On^2 计算R和U 集合最近元素距离
-r[0].flag1 = U;   // 随机选用一个点归为MST的预备中
-while (!isempty(n, r)) {
-    double minv = 100000;// 画家策略 求覆盖
-    int keepi;
-    for (int i = 0; i < n; ++i) {
-        if (r[i].flag1 == R) {
-            for (int j = 0; j < n; ++j) {
-                if (r[j].flag1 == U) {
-                    double dst = calculateD(r[i], r[j]);
-                    if (dst < minv) {// 找分别位于两个集合中距离最近的点和位于Remain集合中的节点的下标
-                        minv = dst;
-                        keepi = i;
-                    }
-                }
-            }
+
+for(int i = 1 ;i< n ;++i)
+{
+    int idex1 = -1; double tmp =__DBL_MAX__;
+    for( int j =0 ;j < N ;++j) //找 未加入节点 到 生成树集合 最短的一条边
+    {
+
+        if(added[j]== false && tmp < numd[j] )
+        {
+            tmp = numd[j]; idex1 =i;
         }
     }
-    ans += kmin;// 累加R和U集合最近的边
-    r[keepi].flag1 = U;//R节点数目减一，也意味着U集合加一
-}
+    added[idex1] = true;  //加入新节点到生成树集合
 
+    for(int j =  0; j < N; ++j) //更新未加入生成树的节点到 生成数集合 的距离
+    {
+        if(added[j] == false)
+        {
+            numd[j] = min(distc(nums[j] , nums[idex1]),numd[j]); 
+        }
+    }
+}
 
 //**************************************************************kruskal 算法******************************
 /*

@@ -824,6 +824,62 @@ for(int i=0;i<numE;++i)
 }
 // 返回||输出MST对应的值ans
 
+//*******************************************************三大带权图 寻最短路径算法*******************************************
+// 1 floyd 算法 寻多源最短路径 三重循环  动态规划 k许可路径(允许使用前 1--k个节点寻找最短路径)
+
+// 2 dijkstra 算法 寻找单源最短路径  类似prim算法，不过numsd[]中记录的是到源点的最短路径 (可使用优先队列优化)
+// 由于该算法使用贪心， 一旦确定节点已经访问 就不再改变 故应付不了带负权的情况
+
+// 3 bellman 算法 寻找单源最短路径 可以知道最长的最短路径也之包含n-1 条边
+// 故 暴力 对所有边 进行 n-1 次relax 可求的最短路径  (可使用优先队列优化 shortest path faster algorithm SPFA)
+// 最后 再次对所有边进行一次relax 可检测 负权回路
+
+
+//2 dijkstra
+const int N = 1010;
+
+int m1[N][N];
+bool visited[N];
+int numsd[N]; // initial =inf
+int numspre[N]; // previous path
+
+const int INF = 0x3f3f3f3f;
+void dijkstra(int s , int e1)
+{
+    mm(numsd,0x3f,sizeof(numsd));
+    mm(numsc,0x3f,sizeof(numsc));
+    mm(visited,0,sizeof(visited));
+
+    numsd[s] = 0;  numsc[s] = 0; //numspre[s] = s;
+    while (visited[e1] == false)
+    {
+        int tmpd = INF, tmpi = -1;
+        for(int i= 0; i< N ;++i)
+        {
+            if(visited[i] == false && numsd[i] < tmpd)
+            {
+                tmpd = numsd[i]; tmpi =i;
+            }
+        }
+        visited[tmpi] = true; 
+        // if(tmpi == -1) return;
+        for(int i = 0; i< N ; ++i)
+        {
+            if(visited[i] == false &&  numsd[i] > numsd[tmpi] +m1[tmpi][i])
+            {
+                numsd[i] = numsd[tmpi] +m1[tmpi][i].first;
+                // numspre[i] = tmpi; 记录 他的 上一个节点
+            }
+        }
+    }
+}
+
+// void fcount(int s,int e1)
+// {
+//     if(s == e1) return ;
+//     cout <<e1<<endl
+//    fcount(s ,numspre[e1])
+// }
 
 
 //*****************************************************Huffman哈夫曼数****************

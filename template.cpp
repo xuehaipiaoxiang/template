@@ -2,11 +2,16 @@
 #define fdbg  std::cout<<"*********************************"<<std::endl;
 #define fas(i,a,b) for(int i=a;i<b;++i)  //[小 大)
 #define fdes(i,b,a) for(int i=b;i>=a;--i) //[大 小]
-#define mm memset
+#define mm memset   
 typedef pair<int,int> PII;
-//*********************************end积累的常用宏和定义*******************************
+#define INF 0x3f3f3f3f
+/*不使用0x7fffffff表示无穷大，因为再加一个数会发生溢出 变成负数
+但是 0x3f3f3f3f  即使再加 0x3f3f3f3f 也不发生溢出，而且 两者都是1e9量级符合无穷大的性质
+mm(a,0x3f,sizeof(a)) 也特别好赋值 。把 0x3f重复 sizeof(a)个字节 赋值
+*/
 
 
+//*********************************常见打印格式*******************************
 /*
 c++中常用打印
 printf("%lld",long long ) 对应 long long

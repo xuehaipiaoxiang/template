@@ -242,7 +242,7 @@ string faddString(const string&a,const string&b)
     reverse(c.begin(),c.end());
     return c;
 }
-//**************************big integer add********************************88
+
 string fsubCore(const string&a,const string&b);
 
 string fsubString(const string&a,const string&b)
@@ -377,10 +377,10 @@ alls.erase(unique(alls.begin(),alls.end()),alls.end());
 vector<int>::iterator funique(vector<int> &nums)
 {
     int i,j;
-    for(i=0,j=0;i<nums.size();++i)
+    for(i = 0, j = 0 ; i < nums.size(); ++i)
     {
-        if(i==0|| nums[i]!=nums[i-1])
-            nums[j++]=nums[i];
+        if( i == 0 || nums[i] != nums[i-1])
+            nums[j++] = nums[i];
     }
     return nums.begin()+j;
 }

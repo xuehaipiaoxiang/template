@@ -607,7 +607,7 @@ class UF
 {
 private:
     int _n;
-    int _rank[MAXN];
+    int _rank[MAXN]; //其实rank可以用负数在_uf中表示
     int _uf[MAXN];
 protected:
     virtual void finitialize(int n);
@@ -659,10 +659,16 @@ void UF::fmerge(int x,int y)
         ++_rank[ty];
     }
 }
-//其实rank可以用负数在_uf中表示
-//****************************************************************并查集*******************
+
+
 
 //**************通过统计DFS的调用次数来确定连通分量(极大连通子图)的数目
+
+// DFS 需要栈结构的支持，而函数递归天然有栈结构所有很适合
+// DFS 一般有两种设计方式
+// 1 设计返回值为void 然后用一个全局变量ans来记录状态 同时通过ans的状态进行剪纸
+// 2 设计返回值 同时主要分支需要考虑多种可能 例如 return dfs(condition1) + dfs(condition2) + dfs(condition3)...
+
 vector<vector<bool>> matrix(n,vector<bool>(n,false));//用邻接矩阵存储图
 //matrix[x-1][y-1]=matrix[y-1][x-1]=true;
 int n;      //节点数目

@@ -331,6 +331,90 @@ string fdivString(string& a1,int b1)
 //*******************************end 字符串表示的大数进行计算*****************************
 
 
+//**********************************字符串表达式计算*************************
+
+unordered_map<char, int> um2; //存字符对应的数字
+
+int reverse_polish_calculating(const string & str1)
+{
+    stack<int> stk1;
+    for( char x : str1)
+    {
+        if( x>='a' && x <='z')
+        {
+            stk1.push( um2[x]);
+        }
+        else
+        {
+            int a, b;
+            b = stk1.top(); stk1.pop();
+            a = stk1.top(); stk1.pop();
+            int tmp = 0;
+
+            switch (x)
+            {
+                case '+':
+                    tmp = a +b;
+                    break;
+                case '-':
+                    tmp = a - b;
+                    break;
+                case '*':
+                    tmp = a * b;
+                    break;
+                case '/':
+                    tmp = a / b;
+                    break;
+                default:
+                    break;
+            }
+            stk1.push(tmp);
+        }
+    }
+    return stk1.top();
+
+
+}
+/*
+注意 # 和 $的优先级
+#不能压住真正的算符， 但是必须压住栈底默认的算符$
+算符$ 确保任何字符都可以压入
+*/
+unordered_map<char, int> um1 ={
+    {'+',2},{'-',2},{'*',3},{'/',3},{'#',1},{'$',0}
+};
+
+string covert2reverse_polish (string str1)
+{
+    str1 = str1 + "#";
+    string ans;
+    stack<char> stk1; stk1.push('$');
+
+    int i = 0;
+    while ( i < str1.size() )
+    {
+        if(str1[i] >='a' && str1[i] <='z')
+        {
+            ans.push_back(str1[i]);
+            ++i;
+        }
+        else
+        {
+            if( um1[str1[i]] > um1[stk1.top()])
+            {
+                stk1.push(str1[i]);
+                ++i;
+            }
+            else
+            {
+                ans.push_back( stk1.top() ); stk1.pop();
+            }
+        }
+    }
+    return ans;
+}
+
+
 //********************************统计数字的二进制表示中“1”的个数************8
 /*
 有多种做法

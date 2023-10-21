@@ -298,21 +298,6 @@ string fsubCore(const string&a,const string&b)
 }
 //**************************end big integer substract
 
-string fmulString(const string&a,const int b)
-{
-    string c1;
-    int carry=0,i=a.size()-1;
-    while (i>=0||carry>0)
-    {
-        if(i>=0)carry=carry+(a[i--]-'0')*b;
-        c1.push_back(carry%10+'0');
-        carry/=10;
-    }
-    reverse(c1.begin(),c1.end());
-    while(c1.size()>1&&c1[0]=='0') c1.erase(0,1);
-    return c1;
-}
-//*************************end string X interger
 
 string fdivString(string& a1,int b1)
 {
@@ -327,6 +312,74 @@ string fdivString(string& a1,int b1)
     //r ::=reminder
     while(c1.size()>1&&c1[0]=='0') c1.erase(c1.begin());
     return c1;
+}
+
+//***************************************string X string**********************************
+string fadd(const string & str1, const string & str2)
+{
+    string ans;
+    int i = str1.size() -1, j = str2.size() -1;
+    int carry = 0;
+    while ( i >= 0 && j >= 0)
+    {
+        carry += (str1[i--] -'0') + (str2[j--] -'0');
+        ans.push_back( carry % 10 +'0');
+        carry /= 10;
+    }
+    while ( i >= 0)
+    {
+        carry += (str1[i--] -'0');
+        ans.push_back( carry % 10 +'0');
+        carry /= 10;   
+    }
+
+    while ( j >= 0)
+    {
+        carry += (str2[j--] -'0');
+        ans.push_back( carry % 10 +'0');
+        carry /= 10;   
+    }
+    if( carry != 0)
+        ans.push_back('1');
+    reverse( ans.begin(), ans.end());
+    return ans;
+}
+//*************** string X number****************
+string fmul(string const & str1, int b )
+{
+    string ans; int carry = 0;
+    int i = str1.size() -1 ;
+    while ( i >= 0 || carry != 0 )
+    {
+        if( i >= 0 ) 
+            carry += (str1[i--] - '0') * b;
+        ans.push_back( carry%10 + '0');
+        carry /= 10;
+    }
+
+    reverse( ans.begin(), ans.end() );
+    while(ans.size()>=1 && ans[0] =='0')
+        ans.erase(0, 1);
+
+    return ans;
+}
+//********************* string X string **********************
+string fmulBig(string const & str1,  string   str2)
+{
+    string ans = "0";
+    int ctn = 0; // 每次对齐需要补'0'的数目
+    while ( str2.size() > 0)
+    {
+        int b = str2.back() - '0'; str2.erase(str2.end() -1 );
+        string tmp = fmul( str1, b);
+        for( int i = 0; i < ctn; ++i)
+        {
+            tmp.insert(tmp.end(), '0'); //模拟乘法 中的对齐
+        }
+        ++ctn;
+        ans = fadd(ans, tmp); //模拟乘法 中的相加
+    }
+    return ans;
 }
 //*******************************end 字符串表示的大数进行计算*****************************
 

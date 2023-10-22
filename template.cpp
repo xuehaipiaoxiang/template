@@ -526,6 +526,7 @@ vector<int>::iterator funique(vector<int> &nums)
 }
 
 //*********************************************单调栈或单调队列**************************************
+//********双指针**********
 /*
 单调栈
 例子：当前元素x左边，比x小的前提下，更近的元素
@@ -550,12 +551,13 @@ int main()
         e1[rsp++] = tmp;
     }
 }
+
 /*
-单调队列
-实则是双端队列，队尾也要出队满足单调性
-例子：窗口区最大值 满足递减序列
-要么更大，要么寿命长
+单调队列，使用双端队列deque实现
+求滑动窗口最小值 则要求队列元素符合递增序列
+求滑动窗口最大值 则要求队列元素符合递减序列
 */
+
 const int N = 10010;
 int nums[N];
 int queue1[N]; //下标
@@ -571,7 +573,7 @@ int main()
         if( hh < tt && queue1[ hh ] < i-k+1 ) ++hh;
         while( hh < tt && nums[i] <= nums[ queue1[tt-1] ] ) --tt;
         queue1[ tt++ ] = i;
-        if( i>=2 ) printf("%d ",nums[queue1[hh]]);
+        if( i >= k-1 ) printf("%d ",nums[queue1[hh]]);
     }
 }
 

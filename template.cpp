@@ -525,32 +525,29 @@ vector<int>::iterator funique(vector<int> &nums)
     return nums.begin()+j;
 }
 
-//*****************************************双指针进阶****单调栈或单调队列
+//*********************************************单调栈或单调队列**************************************
 /*
 单调栈
 例子：当前元素x左边，比x小的前提下，更近的元素
 维护一个递增栈
-放入栈中的元素，要么距离x更近，要么更小
 */
-using namespace std;
-const int N=10010;
-int rsp=0;
+const int N = 10010;
+int rsp = 0;
 int e1[N];
 
 int main()
 {
-    int n;
-    cin>>n;
-    for(int i=0;i<n;++i)
+    int n; cin >> n;
+    for(int i = 0; i < n; ++i)
     {
-        int tmp;cin>>tmp;
-        while(rsp&&e1[rsp-1]>=tmp)
+        int tmp ; cin >> tmp;
+        while(rsp != 0 && e1[rsp-1] >= tmp)
             --rsp;
-        if(rsp)
-            cout<<e1[rsp-1]<<" ";
+        if(rsp != 0 )
+            cout << e1[rsp-1] << " ";
         else 
-            cout<<-1<<" ";
-        e1[rsp++]=tmp;
+            cout << -1 <<" ";
+        e1[rsp++] = tmp;
     }
 }
 /*
@@ -559,34 +556,25 @@ int main()
 例子：窗口区最大值 满足递减序列
 要么更大，要么寿命长
 */
-const int N=10010;
+const int N = 10010;
 int nums[N];
 int queue1[N]; //下标
-int hh,tt;
+int hh,tt; // head & tail
 int main()
 {
-    int n,k;
-    scanf("%d%d",&n,&k);
-    for(int i=0;i<n;++i) scanf("%d",nums+i);
-    for(int i=0;i<n;++i)
+    int n, k;
+    scanf("%d%d", &n, &k);
+    for(int i = 0; i < n; ++i) scanf("%d", nums + i);
+    hh = tt = 0;
+    for(int i = 0; i < n; ++i)
     {
-        if(hh<tt&&queue1[hh]<i-k+1) ++hh;
-        while(hh<tt&&nums[i]<=nums[queue1[tt-1]]) --tt;
-        queue1[tt++]=i;
-        if(i>=2) printf("%d ",nums[queue1[hh]]);
-    }
-    puts("");
-    hh=tt=0;
-    for(int i=0;i<n;++i)
-    {
-        if(hh<tt&&queue1[hh]<i-k+1) ++hh;
-        while(hh<tt&&nums[queue1[tt-1]]<=nums[i]) --tt;
-        queue1[tt++]=i;
-        if(i>=2) printf("%d ",nums[queue1[hh]]);
+        if( hh < tt && queue1[ hh ] < i-k+1 ) ++hh;
+        while( hh < tt && nums[i] <= nums[ queue1[tt-1] ] ) --tt;
+        queue1[ tt++ ] = i;
+        if( i>=2 ) printf("%d ",nums[queue1[hh]]);
     }
 }
 
-//*******************************************************************end 双指针常用方式*********************************
 
 
 //***********************************区间合并 返回合并后的新区间**********************

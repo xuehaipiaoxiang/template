@@ -570,7 +570,7 @@ int main()
     hh = tt = 0;
     for(int i = 0; i < n; ++i)
     {
-        if( hh < tt && queue1[ hh ] < i-k+1 ) ++hh;
+        if( hh < tt && i - queue1[hh] > k -1 ) ++hh;
         while( hh < tt && nums[i] <= nums[ queue1[tt-1] ] ) --tt;
         queue1[ tt++ ] = i;
         if( i >= k-1 ) printf("%d ",nums[queue1[hh]]);

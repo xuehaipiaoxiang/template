@@ -532,6 +532,7 @@ vector<int>::iterator funique(vector<int> &nums)
 例子：当前元素x左边，比x小的前提下，更近的元素
 维护一个递增栈
 */
+
 const int N = 10010;
 int rsp = 0;
 int e1[N];
@@ -545,7 +546,7 @@ int main()
         while(rsp != 0 && e1[rsp-1] >= tmp)
             --rsp;
         if(rsp != 0 )
-            cout << e1[rsp-1] << " ";
+            cout << e1[ rsp - 1 ] << " ";
         else 
             cout << -1 <<" ";
         e1[rsp++] = tmp;
@@ -560,7 +561,7 @@ int main()
 
 const int N = 10010;
 int nums[N];
-int queue1[N]; //下标
+int queue1[N]; //存放的是下标
 int hh,tt; // head & tail
 int main()
 {

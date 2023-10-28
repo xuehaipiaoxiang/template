@@ -31,28 +31,33 @@
   * 堆区
 # C++ 性质
 ## 输出数据
->
-  c++中常用打印
-  printf("%lld",long long ) 对应 long long
-  printf("lf",double)
-  scanf("%d",&n1) 把缓冲区的值放入n1地址对应的变量中
-  一般while(scanf(...)!=EOF) || while(~scanf(...))
-  
-  scanf("%s",&str1)和cin 会忽略开头(空白符)空格、Tab制表、和换行\n。 并且遇到空白符就会停止读入，但不会丢弃。故常常使用getchar()读结尾的/n
-  
-  getline() 会读取空格，当且遇到/n时才停止，并丢弃/n
-  gets() c语言版的 getline
-  puts() 输出
-  但是scanf("%c",&c1)例外，它会读入开头的空白符
-  所有一般在模式前面加上空格(“空格%c”)，这样就可以忽略开头(空白符)空格了
-  char c ; cin >> c; 类似于scanf(" %c",&c);会自动忽略丢弃前面的空白符
-  遇见数字的时候用char 方式可能错误，因为不知道数字有几位。
+
+printf("%lld",long long ) 对应 long long
+printf("lf",double)
+scanf("%d",&n1) 把缓冲区的值放入n1地址对应的变量中
+一般while(scanf(...)!=EOF) || while(~scanf(...))
+
+scanf("%s",&str1)和cin 会忽略开头(空白符)空格、Tab制表、和换行\n。 并且遇到空白符就会停止读入，但不会丢弃。故常常使用getchar()读结尾的/n
+
+getline() 会读取空格，当且遇到/n时才停止，并丢弃/n
+gets() c语言版的 getline
+puts() 输出
+但是scanf("%c",&c1)例外，它会读入开头的空白符
+所有一般在模式前面加上空格(“空格%c”)，这样就可以忽略开头(空白符)空格了
+char c ; cin >> c; 类似于scanf(" %c",&c);会自动忽略丢弃前面的空白符
+遇见数字的时候用char 方式可能错误，因为不知道数字有几位。
 
 ## 加快cin/cout速度
 
-ios::sync_with_stdio(false);//取消cin/cout和printf/scanf之间的绑定
-cin.tie(0);//取消cin和cout之间的绑定
+ios::sync_with_stdio(false);//取消cin/cout和printf/scanf之间的绑定 <br>
+cin.tie(0);//取消cin和cout之间的绑定 <br>
 * 以上为两个函数调用，需要在main函数以内进行
-## 
+## 斜杠/ 和反斜杠\
+* / 程序中的除法
+* / UML地址
+* \ windows 目录
+* \转义字符，和后面的一个字符结合，代表一个特殊操作 例如\n \t
+* \\可以表示字符\的本身
+  
 
 

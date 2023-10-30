@@ -1219,14 +1219,14 @@ for(int i = 2, j = 1; i <= n; ++i)//从2开始
 
 for(int i = 1, j = 1; i <= m; ++i)
 {
-    while(j>1&&s1[i]!=p1[j]) j=next1[j-1];
-    if(s1[i]==p1[j])
+    while( j > 1 && s1[i] != p1[j] ) j = next1[j-1];
+    if( s1[i] == p1[j])
     {
         ++j;
-        if(j==n+1)
+        if(j == n+1)
         {
             printf("%d ",i-n);//i-n+1是从1开始的索引下标
-            j=next1[j-1];
+            j = next1[j-1];
         }
     } 
 }

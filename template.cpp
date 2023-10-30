@@ -1196,31 +1196,28 @@ for(int i=2;i<N;++i)
 */
 
 //******************************************************KMP****************************************
-/*
-KMP
+
+//主串S，模式串P
+//数组下标都从1开始
+
+next数组存放当前位置对应 模式串位置 的 相等 前后缀长度 个数
+
 */
-/*
-定义主串，模式串，next数组都从1开始
-p:abaabac
-  1122321
-p:aaa
-  123
-next 存放匹配前缀的下一个位置
-每次for结尾时 j指向匹配前缀的下一个位置,i指向后缀本位.
-下次for开始i++，此时ij都指向新位置
-*/
-const int N=10010,M=1000010;
-char p1[N],s1[M];// p是模式pattern ,s是待匹配字符串
-int next1[N];
-int n,m;
-next1[1]=1;// 1初始化
-for(int i=2,j=1;i<=n;++i)//从2开始
+const int M = 1000010;
+char p1[M], s1[M]; // p是模式pattern ,s是待匹配字符串
+int next1[M];
+int n, m;
+next1[1] = 1;// 1初始化
+
+// next 串的 构建
+for(int i = 2, j = 1; i <= n; ++i)//从2开始
 {
-    while(j>1&&p1[i]!=p1[j]) j=next1[j-1];
-    if(p1[i]==p1[j]) ++j;
-    next1[i]=j;
+    while(j > 1 && p1[i] != p1[j]) j = next1[j-1];
+    if(p1[i] == p1[j]) ++j;
+    next1[ i ] = j;
 }
-for(int i=1,j=1;i<=m;++i)
+
+for(int i = 1, j = 1; i <= m; ++i)
 {
     while(j>1&&s1[i]!=p1[j]) j=next1[j-1];
     if(s1[i]==p1[j])

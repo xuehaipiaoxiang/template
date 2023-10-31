@@ -1217,7 +1217,7 @@ char p1[M], s1[M]; // p是模式pattern ,s是待匹配字符串
 int next1[M];
 int n, m;
 
-// next 串的 构建 next1[1] = 0; 实际用的是 next1[0] + 1
+// next 串的 构建 next1[1] = 0; 实际用的是p1[ next1[0] + 1 ]
 for(int i = 2, j = 0; i <= n; ++i)//从2开始
 {
     while(j != 0 && p1[i] != p1[j +1]) 匹配上位置的下一个位置

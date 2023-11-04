@@ -76,83 +76,72 @@ void fmergeSort(int nums[],int lo,int hi)//[lo,hi]
 //*********************************************************end quickSort**************************
 
 
-
 //********************************************* 二叉堆以及堆排序的实现***********************************************
 /*
+大顶堆可以形成递增序列  小顶堆可以形成递减序列
+为了实现 乘2 和乘2+1找 孩子节点，一般索引从一开始
+N 数组最大空间， 1 ~ n 为堆中元素个数
+其中 [1, 向下取整n/2 ] 为非叶 节点
 以大顶堆和非严格递增序列为例
 */
-const int MAXN=1000+10;
-
-// [1,nsize]
-int nums[MAXN];
+const int N = 100000 + 10;
+int n; cin >> n;
+int nums[ N ];   fas(i,0,n) cin>>nums[i+1];  // [1,nsize]
 
 void heapify(int nums[],int p,int nsize);
 
-void insert_h(int nums[],int &nsize,int x);//基于逐个插入的方法建堆
+void insert_h(int nums[],int &nsize,int x);//朴素建堆：基于逐个插入的方法建堆
 
-void build_heap(int nums[],int nsize);//floyd 快速建堆
+void build_heap(int nums[],int nsize);//快速建堆：heapify
 
-void sort_h(int nums[],int nsize);// 大顶堆最终可以形成递增序列  小顶堆最终可以形成递减序列 
-//因为具体做法是每次弹出堆顶元素，同时堆的规模从尾部减一
-
-fas(i,0,n)
-{
-    cin>>nums[i+1];
-}
 insert_h(nums,n,100);//build_heap(nums,100);
 sort_h(nums,n);
 
 
-void heapify(int nums[],int p,int nsize)
-{//注意区间[p,nsize]
-    int largest=p,left=p<<1,right=(p<<1)+1;
-    if(left<=nsize && nums[p]<nums[left])
-    {
+void heapify(int i)  // 向左右子节点 递归进行 当前i 做为parents
+{
+    int largest = i, left = i << 1, right = ( i<<1 ) + 1;
+    if(left <= n && nums[ i ] < nums[ left ] )
         largest=left;
-    }
-    if(right<=nsize && nums[largest]<nums[right])
-    {
-        largest=right;
-    }               //此时largest为最大元素下表
-    if(largest==p) //当根节点p 为最大时，已经满足大顶堆性质
+    if(right <= n && nums[largest]<nums[right])
+        largest = right;     
+    if(largest == i) //当根节点p 为最大时，已经满足大顶堆性质
         return;     //递归基
     swap(nums[largest],nums[p]);
-    heapify(nums,largest,nsize); //交换后递归下一层
-
+    heapify( largest ); //交换后递归下一层
 }
 
-void build_heap(int nums[],int nsize)
+void build_heap()  
 {
-    fdes(i,(nsize>>1),1) //注意从后往前，从最后一个非叶节点调用heaptify
+    fdes(i, ( n >> 1 ) ,1) //注意从后往前，对每个非叶节点调用 heaptify 完成建堆
+        heapify(i);
+}
+
+void heapSort() //具体做法是每次弹出堆顶元素，同时堆的规模从尾部减一
+{
+    build_heap( );
+    fdes( i, nsize, 2) // 其他元素都在应该的位置上时第一个元素也在应该的位置
     {
-        heapify(nums,i,nsize);
+        swap( nums[1], nums[nsize--] );  //先把首元素(最大元素)和最后元素交换，同时堆的规模减一
+        heapify( 1 ); //根节点还不满足 堆的 性质
     }
 }
 
-void sort_h(int nums[],int nsize)
+void insertHeap( int x )  
 {
-    build_heap(nums,nsize);
-    fdes(i,nsize,2) // 其他元素都在应该的位置上时第一个元素也在应该的位置
+    nums[ ++n ] = x;//最后的插入元素不满足堆性质
+    int i = n, p;
+    while( 1 < i) //只要当前位置i不是根
     {
-        swap(nums[1],nums[nsize--]);//每次把首元素(最大元素)和最后元素交换，同时规模减一
-        heapify(nums,1,nsize);//其他元素都满足堆，首元素向下交换
-    }
-}
-
-void insert_h(int nums[],int &nsize,int x)
-{
-    nums[++nsize]=x;//最后的插入元素不满足堆性质
-    int i=nsize,p;
-    while(1<i) //只要当前位置i不是根
-    {
-        p=i>>1; //找到i的父亲p，p最后一次可能指向根(1)
-        if(nums[i]<=nums[p])
+        p = i >> 1; //找到i的父亲p，p最后一次可能指向根(1)
+        if(nums[i] <= nums[p])
             break;
         swap(nums[p],nums[i]);
-        i=p;
+        i = p;
     }
 }
-//*********************************************end heapSort堆排序****************************************
+
+
 
 //********************************************** 二分查找Bsearch的规范写法**********************************
 int findLow(int nums[],int lo,int hi,int x) //[lo,hi]

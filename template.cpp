@@ -92,7 +92,7 @@ void heapify(int i)  // 向左右子节点 递归进行 当前i 做为parents
         largest = right;     
     if(largest == i) //当根节点p 为最大时，已经满足大顶堆性质
         return;     //递归基
-    swap(nums[largest],nums[p]);
+    swap(nums[ largest ], nums[ i ]);
     heapify( largest ); //交换后递归下一层
 }
 

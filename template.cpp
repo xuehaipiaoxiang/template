@@ -329,7 +329,7 @@ string fmul(string const & str1, int b )
 
     return ans;
 }
-//********************* string X string **********************
+//********************* string X string **********
 string fmulBig(string const & str1,  string   str2)
 {
     string ans = "0";

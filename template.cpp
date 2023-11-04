@@ -5,7 +5,7 @@ strlen 是<cstring>里面的函数， 统计char 的数目一直到'\n'终止，
 #define fas(i,a,b) for(int i=a;i<b;++i)  //[小 大)
 #define fdes(i,b,a) for(int i=b;i>=a;--i) //[大 小]
 #define mm memset   
-typedef pair<int,int> PII;
+typedef pair<int,int> pii;
 #define INF 0x3f3f3f3f
 /*不使用0x7fffffff表示无穷大，因为再加一个数会发生溢出 变成负数
 但是 0x3f3f3f3f  即使再加 0x3f3f3f3f 也不发生溢出，而且 两者都是1e9量级符合无穷大的性质
@@ -36,10 +36,6 @@ int partition(int nums1[],int lo1,int hi1)
     nums1[lo1]=pivot;
     return lo1;
 }
-// ***********************************end quickSort*******************************
-
-
-
 
 // ****************************************mergeSort归并排序***********************
 int nums[1000];
@@ -73,7 +69,6 @@ void fmergeSort(int nums[],int lo,int hi)//[lo,hi]
     fmerge(nums,lo,mid,hi);
 }
 
-//*********************************************************end quickSort**************************
 
 
 //********************************************* 二叉堆以及堆排序的实现***********************************************
@@ -87,16 +82,6 @@ N 数组最大空间， 1 ~ n 为堆中元素个数
 const int N = 100000 + 10;
 int n; cin >> n;
 int nums[ N ];   fas(i,0,n) cin>>nums[i+1];  // [1,nsize]
-
-void heapify(int nums[],int p,int nsize);
-
-void insert_h(int nums[],int &nsize,int x);//朴素建堆：基于逐个插入的方法建堆
-
-void build_heap(int nums[],int nsize);//快速建堆：heapify
-
-insert_h(nums,n,100);//build_heap(nums,100);
-sort_h(nums,n);
-
 
 void heapify(int i)  // 向左右子节点 递归进行 当前i 做为parents
 {
@@ -113,8 +98,17 @@ void heapify(int i)  // 向左右子节点 递归进行 当前i 做为parents
 
 void build_heap()  
 {
-    fdes(i, ( n >> 1 ) ,1) //注意从后往前，对每个非叶节点调用 heaptify 完成建堆
+    fdes(i, ( n >> 1 ) ,1) //注意从后往前，对每个非叶节点调用 heaptify 快速建堆
         heapify(i);
+    
+    /*
+    //朴素建堆：基于逐个插入的方法建堆
+    for( int i = 0; i < n; ++i)
+    {
+        int x; cin >> x;
+        insertHeap( x );
+    }
+    */
 }
 
 void heapSort() //具体做法是每次弹出堆顶元素，同时堆的规模从尾部减一

@@ -81,14 +81,14 @@ N 数组最大空间， 1 ~ n 为堆中元素个数
 */
 const int N = 100000 + 10;
 int n; cin >> n;
-int nums[ N ];   fas(i,0,n) cin>>nums[i+1];  // [1,nsize]
+int nums[ N ];   fas(i, 0, n) cin>>nums[i+1];  // [1,nsize]
 
 void heapify(int i)  // 向左右子节点 递归进行 当前i 做为parents
 {
     int largest = i, left = i << 1, right = ( i<<1 ) + 1;
     if(left <= n && nums[ i ] < nums[ left ] )
         largest=left;
-    if(right <= n && nums[largest]<nums[right])
+    if(right <= n && nums[ largest ] < nums[ right ])
         largest = right;     
     if(largest == i) //当根节点p 为最大时，已经满足大顶堆性质
         return;     //递归基
@@ -134,6 +134,17 @@ void insertHeap( int x )
         i = p;
     }
 }
+
+int deleteE()
+{
+    int tmp = nums[1];
+    nums[1] = nums[n--];
+    heapify( 1 );
+    return tmp;
+}
+
+
+
 
 
 

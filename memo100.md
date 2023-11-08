@@ -33,12 +33,13 @@
 
 printf("%lld",long long ) 对应 long long
 
-printf("lf",double)
+printf("%lf",double)
 
 scanf("%d",&n1) 把缓冲区的值放入n1地址对应的变量中
 一般while(scanf(...)!=EOF) || while(~scanf(...))
 
-scanf("%s",&str1)和cin 会忽略开头(空白符)空格、Tab制表、和换行\n。 并且遇到空白符就会停止读入，但不会丢弃。故常常使用getchar()读结尾的/n
+scanf("%s",&str1)和cin 会忽略开头(空白符)空格、Tab制表、和换行\n。 并且遇到空白符就会停止读入，但不会丢弃。故常常使用getchar()读结尾的'\n'
+scanf("%s") 读入后的字符串添加'\0'
 
 getline() 会读取空格，当且遇到/n时才停止，并丢弃/n
 

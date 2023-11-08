@@ -6,7 +6,7 @@
 const int N = 10010;
 
 char table1[N][26];
-int idx1; // index 始终增加
+int idx1; // index  = 0 始终增加
 bool visited[N]; // 可以改成计数
 
 void insert( char  str1[])
